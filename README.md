@@ -1,7 +1,68 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Autocomplete-react
 
-## Available Scripts
+A react component that turns a regular `<select>` element into an accessible
+autocomplete control.
 
+The implementation of this component is based on [building an accessible autocomplete control](https://adamsilver.io/articles/building-an-accessible-autocomplete-control/) by Adam Silver. [A demo of that control is available on heroku](https://nostyle.herokuapp.com/examples/autocomplete).
+
+## Roadmap
+
+### The control is an enhancement of the select element
+- Renders a regular select control when javascript is not available
+- Select box is visually hidden when the autocomplete is present
+- Select box is hidden to assistive technology when the autocomplete is present
+- Select box is not focusable when the autocomplete is present
+- When the user selects an autocomplete option, the select box is updated to keep them in sync, so the correct data is sent to the server when submitting forms
+
+### The menu doesn't get in the way
+- The menu is hidden until you interact with the control
+- It takes up a maximum height and the content becomes scrollable if it exceeds that
+- Unfocusing the control hides the menu to stop it obscuring content
+- There is an overlaid SVG icon as a visual hint that the menu is available
+
+### Autocomplete behaviour takes precedence over browser defaults
+- Browser autocomplete is disabled
+- Browser autocapitalize is disabled
+
+### Filtering is intuitive
+- Filtering is case insensitive
+- Options are still returned if there are small typos
+- Users can type alternate names for each option
+
+### The control is usable by keyboard
+- The control has a single tab stop which focuses the text box
+- When either the text box or menu is focused, the user can use arrow keys to traverse the menu, and enter or space to select an option
+- When the text box is focused:
+  - If the user presses down without having typed anything, the menu shows all options and focuses the first one
+  - If the user presses down after typing something, and there are matches, the menu shows all matching options and focuses the first one
+- When the menu is focused:
+  - Pressing tab hides the menu
+  - Pressing escape hides the menu and focuses the text box.
+  - Pressing anything other than arrow keys, tab, enter, space, or escape focuses the text box so the user can keep typing.
+
+### The control is usable by assistive technology
+- The control's label is accessible to assistive technology
+- The input is announced as a `combobox`
+- Screen reader users are told that a list of options will appear
+- Screen reader users are told when the menu is expanded or collapsed
+- The menu is communicated as a `list`
+- The selected item is is marked with `aria-selected`
+- A live region is used to inform screen reader users when options are selected
+
+### The component is packaged properly
+- The component can be easily added to another project
+- There is a demo of the component
+- Published to NPM
+
+### Questions
+- Should the menu show whenever the control is focused? Currently, it appears when clicked on but not when navigated to by keyboard.
+- Should the "up" arrow wrap around to the bottom of the list? Currently, it collapses the menu.
+- Should there be a way to tell whether a valid value has been selected? Currently, this is obvious when you are interacting with the control, but if the control is not focused there is no visual distinction.
+
+## Licence
+All code is available under the [MIT licence](LICENSE).
+
+## Development setup from react-starter-kit
 In the project directory, you can run:
 
 ### `npm start`
