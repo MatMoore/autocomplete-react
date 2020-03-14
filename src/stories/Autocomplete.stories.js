@@ -1,5 +1,4 @@
 import React from 'react';
-import { action } from '@storybook/addon-actions';
 
 import Autocomplete from '../Autocomplete.js'
 
@@ -10,4 +9,8 @@ export default {
     excludeStories: /.*Data$/,
 };
 
-export const Default = () => <Autocomplete/>
+const options = [
+    {label: "France", value: "fr"},
+    {label: "Germany", value: "de"},
+]
+export const Default = () => <Autocomplete options={options}/>
