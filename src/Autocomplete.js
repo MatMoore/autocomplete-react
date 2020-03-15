@@ -17,11 +17,22 @@ function AutocompleteFallback() {
 
 export default class Autocomplete extends React.Component {
     constructor(props) {
-        super(props);
+        super(props)
 
         this.state = {
             selectedValue: props.selectedValue
         }
+
+        this.onClickOption = this.onClickOption.bind(this)
+    }
+
+    onClickOption(event) {
+        const option = event.currentTarget.dataset.optionValue
+        this.selectValue(option)
+    }
+
+    selectValue(value) {
+        this.setState({selectedValue: value})
     }
 
     render() {
@@ -33,7 +44,7 @@ export default class Autocomplete extends React.Component {
         });
         const menuElements = props.options.map(option => {
             return (
-                <li key={option.value} role="option" tabIndex="-1" aria-selected={option.value === this.state.selectedValue} data-option-value="{option.value}">
+                <li key={option.value} role="option" tabIndex="-1" aria-selected={option.value === this.state.selectedValue} data-option-value={option.value} onClick={this.onClickOption}>
                     {option.label}
                 </li>
             )
