@@ -50,7 +50,7 @@ export default class Autocomplete extends React.Component {
         return (
             <div className="field">
                 <label htmlFor={inputId} className="field-label">{props.label}</label>
-                <select name={props.name} aria-hidden="true" tabIndex="-1" className="visually-hidden" value={this.state.selectedValue}>
+                <select name={props.name} aria-hidden="true" tabIndex="-1" className="visually-hidden" defaultValue={this.state.selectedValue}>
                     <option value="">Select</option>
                     {optionElements}
                 </select>
