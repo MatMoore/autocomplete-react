@@ -23,7 +23,7 @@ export default function Autocomplete(props) {
     });
     const menuElements = props.options.map(option => {
         return (
-            <li key={option.value} role="option" tabindex="-1" aria-selected="false" data-option-value="{option.value}">
+            <li key={option.value} role="option" tabindex="-1" aria-selected={option.value === props.selectedValue} data-option-value="{option.value}">
                 {option.label}
             </li>
         )
@@ -40,7 +40,7 @@ export default function Autocomplete(props) {
     return (
         <div className="field">
             <label for={inputId} className="field-label">{props.label}</label>
-            <select name={props.name} aria-hidden="true" tabindex="-1" className="visually-hidden">
+            <select name={props.name} aria-hidden="true" tabindex="-1" className="visually-hidden" value={props.selectedValue}>
                 <option value="">Select</option>
                 {optionElements}
             </select>
