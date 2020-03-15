@@ -33,7 +33,7 @@ export default class Autocomplete extends React.Component {
         });
         const menuElements = props.options.map(option => {
             return (
-                <li key={option.value} role="option" tabindex="-1" aria-selected={option.value === this.state.selectedValue} data-option-value="{option.value}">
+                <li key={option.value} role="option" tabIndex="-1" aria-selected={option.value === this.state.selectedValue} data-option-value="{option.value}">
                     {option.label}
                 </li>
             )
@@ -49,13 +49,13 @@ export default class Autocomplete extends React.Component {
 
         return (
             <div className="field">
-                <label for={inputId} className="field-label">{props.label}</label>
-                <select name={props.name} aria-hidden="true" tabindex="-1" className="visually-hidden" value={this.state.selectedValue}>
+                <label htmlFor={inputId} className="field-label">{props.label}</label>
+                <select name={props.name} aria-hidden="true" tabIndex="-1" className="visually-hidden" value={this.state.selectedValue}>
                     <option value="">Select</option>
                     {optionElements}
                 </select>
                 <div className="autocomplete">
-                    <input aria-owns={menuId} autocapitalize="none" type="text" autocomplete="off"  aria-autocomplete="list" role="combobox" id={inputId} aria-expanded="false"/>
+                    <input aria-owns={menuId} autoCapitalize="none" type="text" autoComplete="off"  aria-autocomplete="list" role="combobox" id={inputId} aria-expanded="false"/>
                     {downArrow}
                     <ul id={menuId} role="listbox" className="hidden">
                         {menuElements}
