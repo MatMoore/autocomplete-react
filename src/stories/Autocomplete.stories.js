@@ -15,4 +15,4 @@ const options = [
 ]
 export const Default = () => <Autocomplete name="autocomplete" options={options} label="Destination"/>
 
-export const Selected = () => <Autocomplete name="autocomplete" options={options} label="Destination" selectedValue="de"/>
+export const Selected = () => <Autocomplete name="autocomplete" options={options} label="Destination" selectedValue="de" menuVisible="true"/>
