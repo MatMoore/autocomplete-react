@@ -34,7 +34,26 @@ class AutocompleteInput extends React.Component {
     constructor(props) {
         super(props)
 
+        this.inputRef = React.createRef()
+
         this.handleKeyUp = this.handleKeyUp.bind(this)
+
+        this.state = {
+            validOptionSelected: this.props.value !== undefined
+        }
+    }
+
+    componentDidUpdate() {
+        if(!this.state.validOptionSelected) {
+            return
+        }
+
+        // If we have updated the component,
+        // and have selected an option, rather than typed it,
+        // then put the cursor at the end of the input
+        const inputEl = this.inputRef.current
+        inputEl.focus()
+        inputEl.setSelectionRange(inputEl.value.length, inputEl.value.length)
     }
 
     handleKeyUp(event) {
@@ -58,7 +77,7 @@ class AutocompleteInput extends React.Component {
     }
 
     handleType(event) {
-
+        this.setState({validOptionSelected: false})
     }
 
     render() {
@@ -72,7 +91,7 @@ class AutocompleteInput extends React.Component {
         return (
             <div>
                 <label htmlFor={props.id} className="field-label">{props.label}</label>
-                <input id={props.id} aria-owns={props.menuId} autoCapitalize="none" type="text" autoComplete="off"  aria-autocomplete="list" role="combobox" aria-expanded="false" onKeyUp={this.handleKeyUp}/>
+                <input ref={this.inputRef} id={props.id} aria-owns={props.menuId} autoCapitalize="none" type="text" autoComplete="off"  aria-autocomplete="list" role="combobox" aria-expanded="false" onKeyUp={this.handleKeyUp} defaultValue={props.value}/>
                 {downArrow}
             </div>
         )
@@ -121,7 +140,7 @@ export default class Autocomplete extends React.Component {
 
         this.state = {
             selectedValue: props.selectedValue,
-            menuVisible: props.menuVisible
+            menuVisible: props.menuVisible,
         }
 
         this.handleSelect = this.handleSelect.bind(this)
@@ -129,11 +148,16 @@ export default class Autocomplete extends React.Component {
     }
 
     handleSelect(value) {
-        this.setState({selectedValue: value})
+        this.setState({selectedValue: value, menuVisible: false})
     }
 
     showMenu() {
         this.setState({menuVisible: true})
+    }
+
+    selectedLabel() {
+        const option = this.props.options.find(option => option.value === this.state.selectedValue)
+        return option === undefined ? "" : option.label
     }
 
     render() {
@@ -145,7 +169,7 @@ export default class Autocomplete extends React.Component {
             <div className="field">
                 <HiddenSelect name={props.name} options={props.options} value={this.state.selectedValue}/>
                 <div className="autocomplete">
-                    <AutocompleteInput id={inputId} menuId={menuId} onKeyDown={this.showMenu}/>
+                    <AutocompleteInput id={inputId} menuId={menuId} onKeyDown={this.showMenu} value={this.selectedLabel()}/>
                     {
                         this.state.menuVisible &&
                         <AutocompleteMenu id={menuId} options={props.options} value={this.state.selectedValue} onSelect={this.handleSelect}/>
