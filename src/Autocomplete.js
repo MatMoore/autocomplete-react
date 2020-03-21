@@ -102,7 +102,22 @@ class AutocompleteMenu extends React.Component {
     constructor(props) {
         super(props)
 
+        this.highlightedRef = React.createRef()
+
         this.handleClickOption = this.handleClickOption.bind(this)
+        this.handleKeyUp = this.handleKeyUp.bind(this)
+    }
+
+    componentDidMount() {
+        this.highlightedRef.current.focus()
+    }
+
+    componentDidUpdate() {
+        this.highlightedRef.current.focus()
+    }
+
+    handleKeyUp(event) {
+        console.log('keyup')
     }
 
     handleClickOption(event) {
@@ -113,17 +128,26 @@ class AutocompleteMenu extends React.Component {
     render() {
         const props = this.props
         const numberOfResults = props.options.length
+
         const menuElements = props.options.map(option => {
-            return (
-                <li key={option.value} role="option" tabIndex="-1" aria-selected={option.value === props.value} data-option-value={option.value} onClick={this.handleClickOption}>
-                    {option.label}
-                </li>
-            )
+            if (option.value === this.props.highlightedValue) {
+                return (
+                    <li ref={this.highlightedRef} key={option.value} role="option" tabIndex="-1" aria-selected="true" data-option-value={option.value} onClick={this.handleClickOption}>
+                        {option.label}
+                    </li>
+                )
+            } else {
+                return (
+                    <li key={option.value} role="option" tabIndex="-1" aria-selected="false" data-option-value={option.value} onClick={this.handleClickOption}>
+                        {option.label}
+                    </li>
+                )
+            }
         })
 
         return (
             <div>
-                <ul id={props.id} role="listbox" className="hidden">
+                <ul id={props.id} role="listbox" className="hidden" onKeyUp={this.handleKeyUp}>
                 {menuElements}
                 </ul>
                 <div aria-live="polite" role="status" className="visually-hidden">
@@ -141,14 +165,20 @@ export default class Autocomplete extends React.Component {
         this.state = {
             selectedValue: props.selectedValue,
             menuVisible: props.menuVisible,
+            highlightedValue: props.selectedValue || props.options[0].value
         }
 
         this.handleSelect = this.handleSelect.bind(this)
+        this.handleHighlight = this.handleHighlight.bind(this)
         this.showMenu = this.showMenu.bind(this)
     }
 
     handleSelect(value) {
         this.setState({selectedValue: value, menuVisible: false})
+    }
+
+    handleHighlight(value) {
+        console.log('highlight' + value)
     }
 
     showMenu() {
@@ -172,7 +202,7 @@ export default class Autocomplete extends React.Component {
                     <AutocompleteInput id={inputId} menuId={menuId} onKeyDown={this.showMenu} value={this.selectedLabel()}/>
                     {
                         this.state.menuVisible &&
-                        <AutocompleteMenu id={menuId} options={props.options} value={this.state.selectedValue} onSelect={this.handleSelect}/>
+                        <AutocompleteMenu id={menuId} options={props.options} value={this.state.selectedValue} highlightedValue={this.state.highlightedValue} onSelect={this.handleSelect} onHighlight={this.handleHighlight}/>
                     }
                 </div>
             </div>
